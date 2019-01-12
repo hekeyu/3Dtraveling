@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 WebGL粒子爆炸动画DEMO演示</title>
+  <style>
+  	body{    
+  		margin:0px;
+  		overflow: hidden;
+  	}
+  	canvas{
+  		margin:0px;
+  		position:absolute;
+  	}
+  </style>
+  
+</head>
+
+<body>
+  
+<canvas id="c"></canvas>
+ 
+//片段着色器
+<script id="shader-fs" type="x-shader/x-fragment">
+				#ifdef GL_ES               
+				  precision highp float;
+				  #endif
+				uniform float u_Width;
+				uniform float u_Height;
+				uniform vec4 u_FragColor; 
+    		void main(void) {
+    		 gl_FragColor = vec4(gl_FragCoord.x/u_Width, 0.0, gl_FragCoord.y/u_Height, 1.0);  
+    		}
+		</script>
+//顶点着色器
+<script id="shader-vs" type="x-shader/x-vertex">
+	    
+    	attribute vec4 a_Position;
+
+   	void main(void) {
+  		   gl_Position = a_Position;
+  	}   
+  </script>
+  
+  <script src = "js\cuon-matrix.js"></script>
+  <script src = 'js/heheyu3Dtest.js'></script>
+    <script>
+
+
+var canvas, gl;
+ 
+  
+
+ 
+  canvas = document.getElementById("c");
+
+  gl = canvas.getContext("experimental-webgl");
+ 
+
+	  canvas.width = 600;
+	  canvas.height = 600;
+	  
+	  var gl = canvas.getContext('webgl');
+	  gl.viewport(0, 0, canvas.width, canvas.height);
+ 
+  gl.program = createProgram(gl, "shader-vs", "shader-fs");
+  gl.useProgram(gl.program); 
+  
+  var vertices = new Float32Array([   // Coordinates
+     1.0, 1.0, 1.0,  -1.0, 1.0, 1.0,  -1.0,-1.0, 1.0,   1.0,-1.0, 1.0, // v0-v1-v2-v3 front
+     1.0, 1.0, 1.0,   1.0,-1.0, 1.0,   1.0,-1.0,-1.0,   1.0, 1.0,-1.0, // v0-v3-v4-v5 right
+     1.0, 1.0, 1.0,   1.0, 1.0,-1.0,  -1.0, 1.0,-1.0,  -1.0, 1.0, 1.0, // v0-v5-v6-v1 up
+    -1.0, 1.0, 1.0,  -1.0, 1.0,-1.0,  -1.0,-1.0,-1.0,  -1.0,-1.0, 1.0, // v1-v6-v7-v2 left
+    -1.0,-1.0,-1.0,   1.0,-1.0,-1.0,   1.0,-1.0, 1.0,  -1.0,-1.0, 1.0, // v7-v4-v3-v2 down
+     1.0,-1.0,-1.0,  -1.0,-1.0,-1.0,  -1.0, 1.0,-1.0,   1.0, 1.0,-1.0  // v4-v7-v6-v5 back
+  ]);
+
+  
+  var indices = new Uint8Array([
+     0, 1, 2,   0, 2, 3,    // front
+     4, 5, 6,   4, 6, 7,    // right
+     8, 9,10,   8,10,11,    // up
+    12,13,14,  12,14,15,    // left
+    16,17,18,  16,18,19,    // down
+    20,21,22,  20,22,23     // back
+ ]);
+ 
+ 
+  var vertexBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+  gl.vertexAttribPointer(gl.program.a_Position, 2, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(gl.program.a_Position);
+  
+  var indexBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+  
+ 
+  gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_BYTE, 0); 
+
+  
+  // Last time that this function was called
+
+
+
+    </script>
+
+</body>
+</html>

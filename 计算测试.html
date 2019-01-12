@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src = "js/hekeyuMatrix.js"></script>
+	</head>
+	<body>
+		<script>
+			var t = [0, 0, 0, 1];
+			var L = LookAt(1, 0, 0, 2, 0, 0, 0, 1, 0);
+			console.log(L);
+			L = multiply(L, rotateX(90));  
+			console.log(L); 
+			var fin = multiplyVM(t, L);
+			
+			console.log(fin); 
+			   
+		</script> 
+	</body>
+</html>  
+   
